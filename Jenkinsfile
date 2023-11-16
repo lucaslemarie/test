@@ -1,27 +1,18 @@
 pipeline {
   agent any
   stages {
-    stage('test') {
+    stage('Cloner le dépôt') {
       steps {
-        echo 'start'
-        sleep 30
-        echo 'stop'
+        checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/lucaslemarie/test.git']]])
       }
     }
 
-    stage('build') {
+    stage('Construire l\'image Docker') {
       steps {
-        echo 'start'
-        sleep 30
-        echo 'stop'
-      }
-    }
+        script {
+          docker.build('test-image-jenkins')
+        }
 
-    stage('deploy') {
-      steps {
-        echo 'start'
-        sleep 30
-        echo 'stop'
       }
     }
 
